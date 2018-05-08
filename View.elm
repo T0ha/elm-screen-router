@@ -5,6 +5,7 @@ import Html.Attributes exposing (..)
 import Model exposing (Model)
 import Update exposing (Msg)
 import Router exposing (Screen(..))
+import Screen
 import First.View
 import Second.View
 import Third.View
@@ -32,7 +33,16 @@ view model =
             wrapScreen Update.FirstEvent <| First.View.view model
 
         Second ->
-            wrapScreen Update.SecondEvent <| Second.View.view model
+            let
+                drawer m =
+                    [ Screen.viewDrawer <|
+                        Screen.drawerElements m
+                    ]
+
+                view m =
+                    [ wrapScreen Update.SecondEvent <| Second.View.view m ]
+            in
+                Screen.defaultLayout model drawer view
 
         Third ->
             wrapScreen Update.ThirdEvent <| Third.View.view model

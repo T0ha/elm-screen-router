@@ -1,4 +1,4 @@
-module Router exposing (Screen(..), screenFromLocation, url)
+module Router exposing (Screen(..), screenFromLocation, url, route, header, screens)
 
 import Navigation exposing (Location)
 
@@ -13,50 +13,68 @@ type Screen
 type alias Route =
     { screen : Screen
     , url : String
+    , header : String
     }
 
 
-screens : List ( Screen, String )
+screens : List Route
 screens =
-    [ ( Main, "" )
-    , ( First, "first" )
-    , ( Second, "second" )
-    , ( Third, "third" )
+    [ Route Main "" ""
+    , Route First "first" "First Screen"
+    , Route Second "second" "Second Screen"
+    , Route Third "third" "Third Screen"
     ]
 
 
 screenFromLocation : Location -> Screen
 screenFromLocation location =
     let
-        isCurrent ( screen, hash ) =
-            "#" ++ hash == (Debug.log "location" location.hash)
+        isCurrent { url } =
+            "#" ++ url == (Debug.log "location" location.hash)
 
         screenList =
             List.filter isCurrent screens
     in
         case screenList of
-            [ ( screen, _ ) ] ->
+            [ { screen } ] ->
                 screen
 
             _ ->
                 Main
 
 
-url : Screen -> String
-url screen =
+route : Screen -> Maybe Route
+route screen =
     let
-        isCurrent ( s, l ) =
-            if s == screen then
-                Just l
-            else
+        isCurrent route =
+            route.screen == screen
+
+        routes =
+            List.filter isCurrent screens
+    in
+        case routes of
+            [] ->
                 Nothing
 
-        urls =
-            List.filterMap isCurrent screens
-    in
-        case urls of
-            [ u ] ->
-                "#" ++ u
+            route :: _ ->
+                Just route
 
-            _ ->
-                ""
+
+header : Screen -> String
+header screen =
+    case (route screen) of
+        Just { header } ->
+            header
+
+        _ ->
+            ""
+
+
+url : Screen -> String
+url screen =
+    case (route screen) of
+        Just { url } ->
+            "#" ++ url
+
+        _ ->
+            ""

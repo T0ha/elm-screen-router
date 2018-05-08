@@ -3,21 +3,23 @@ module Second.View exposing (view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Material.Button as Button
+import Material.Options as Options
+import Material.Icon as Icon
 
 
 --
 
 import Model exposing (Model)
 import Router exposing (Screen(..))
+import Screen
 import Second.Update exposing (Msg(..))
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ a [ href <| Router.url Main ] [ text "< Back" ]
-        , h1 [] [ text "Second Screen" ]
-        , div []
+        [ div []
             [ text "Button pushed in this screen: "
             , text <| toString model.second.counter
             ]
@@ -26,6 +28,15 @@ view model =
             , text <| toString model.globalCounter
             ]
         , div []
-            [ button [ onClick IncrementCounter ] [ text "++" ]
+            [ Button.render
+                Mdl
+                [ 0 ]
+                model.mdl
+                [ Button.fab
+                , Button.colored
+                , Options.onClick
+                    IncrementCounter
+                ]
+                [ Icon.i "add" ]
             ]
         ]

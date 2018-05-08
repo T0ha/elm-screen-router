@@ -1,5 +1,6 @@
 module Update exposing (..)
 
+import Material
 import Navigation exposing (Location)
 
 
@@ -15,6 +16,7 @@ import Third.Update
 type Msg
     = Reset
     | ChangeLocation Location
+    | Mdl (Material.Msg Msg)
     | FirstEvent First.Update.Msg
     | SecondEvent Second.Update.Msg
     | ThirdEvent Third.Update.Msg
@@ -25,6 +27,9 @@ update msg model =
     case msg of
         ChangeLocation location ->
             { model | screen = screenFromLocation location } ! []
+
+        Mdl msg_ ->
+            Material.update Mdl msg_ model
 
         FirstEvent e ->
             wrapScreen FirstEvent <| First.Update.update e model
