@@ -30,7 +30,18 @@ view model =
                 ]
 
         First ->
-            wrapScreen Update.FirstEvent <| First.View.view model
+            let
+                drawer m =
+                    [ Screen.viewDrawer <|
+                        Screen.drawerElements m
+                    ]
+
+                view m =
+                    [ wrapScreen Update.FirstEvent <| First.View.view m ]
+            in
+                Screen.defaultLayout model
+                    drawer
+                    view
 
         Second ->
             let

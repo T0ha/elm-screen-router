@@ -1,16 +1,25 @@
 module First.Update exposing (..)
 
+import Material
+
+
+--
+
 import Model exposing (Model)
 
 
 type Msg
     = Reset
     | IncrementCounter
+    | Mdl (Material.Msg Msg)
 
 
-update : Msg -> Model -> ( Model, Cmd msg )
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        Mdl msg_ ->
+            Material.update Mdl msg_ model
+
         IncrementCounter ->
             let
                 counter =

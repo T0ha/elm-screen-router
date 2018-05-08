@@ -12,7 +12,6 @@ import Material.Icon as Icon
 
 import Model exposing (Model)
 import Router exposing (Screen(..))
-import Screen
 import Second.Update exposing (Msg(..))
 
 
