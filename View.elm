@@ -31,29 +31,18 @@ view model =
 
         First ->
             let
-                drawer m =
-                    [ Screen.viewDrawer <|
-                        Screen.drawerElements m
-                    ]
-
                 view m =
                     [ wrapScreen Update.FirstEvent <| First.View.view m ]
             in
                 Screen.defaultLayout model
-                    drawer
                     view
 
         Second ->
             let
-                drawer m =
-                    [ Screen.viewDrawer <|
-                        Screen.drawerElements m
-                    ]
-
                 view m =
                     [ wrapScreen Update.SecondEvent <| Second.View.view m ]
             in
-                Screen.defaultLayout model drawer view
+                Screen.defaultLayout model view
 
         Third ->
             wrapScreen Update.ThirdEvent <| Third.View.view model

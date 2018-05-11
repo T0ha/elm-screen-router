@@ -21,14 +21,14 @@ type alias Render =
     Model -> List (Html Msg)
 
 
-defaultLayout : Model -> Render -> Render -> Html Msg
-defaultLayout model drawer viewBody =
+defaultLayout : Model -> Render -> Html Msg
+defaultLayout model viewBody =
     Layout.render Mdl
         model.mdl
         [ Layout.fixedHeader
         ]
         { header = [ viewHeader model ]
-        , drawer = drawer model
+        , drawer = [ model |> drawerElements |> viewDrawer ]
         , tabs = ( viewTabs model, [ css "cursor" "pointer" ] )
         , main = viewBody model
         }
@@ -48,29 +48,6 @@ viewHeader model =
 viewTabs : Model -> List (Html msg)
 viewTabs model =
     []
-
-
-drawerHeader : Model -> String -> Html Msg
-drawerHeader model header =
-    Options.styled Html.header
-        [ css "display" "flex"
-        , css "box-sizing" "border-box"
-        , css "justify-content" "flex-end"
-        , css "padding" "16px"
-        , css "flex-direction" "column"
-        , cs "demo-header"
-        ]
-        [ Options.styled Html.div
-            [ css "display" "flex"
-            , css "flex-direction" "row"
-            , css "align-items" "center"
-            , css "width" "100%"
-            , css "position" "relative"
-            ]
-            [ Layout.title [] [ text header ]
-            , Layout.spacer
-            ]
-        ]
 
 
 viewDrawer : List (Html msg) -> Html msg
